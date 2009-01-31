@@ -7,7 +7,8 @@ module Stuffy
         rescue Exception
             @db = {
                     'objects_count' => 0,
-                    'objects'       => {}
+                    'objects'       => {},
+                    'config'        => {'colors' => {}}
                   }
         end
         def save_db
@@ -26,6 +27,9 @@ module Stuffy
         end
         def all(type)
             @db['objects'][type]
+        end
+        def config(key)
+            @db['config'][key]
         end
     end
 end

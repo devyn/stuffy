@@ -5,14 +5,9 @@ class Stuffy::TextFile < Stuffy::Plugin
     def initialize _location
         self.location = File.expand_path(_location)
     end
+    def primary_key; location; end
     command 'read', 'reads a Text file', '{text-file-id}' do |id|
         tf = Stuffy::Objects.find 'text file', id.to_i
         File.open(tf.location) {|f| putc f.getc until f.eof? }
-    end
-    command 'list', 'list of all Text files' do
-        tfs = Stuffy::Objects.all 'text file'
-        tfs.each do |tf|
-            puts "#{tf.id} #{tf.location}"
-        end
     end
 end

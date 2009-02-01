@@ -3,10 +3,11 @@ module Stuffy
     VERSION = "alpha"
     COMMANDS = {}
 end
+$: << File.dirname(File.expand_path(__FILE__))
 require 'stuffy/plugin'
 require 'stuffy/objects'
 require 'stuffy/output'
-Dir.glob("plugins/*.rb").each {|r| load r}
+Dir.glob(File.join(File.dirname(File.expand_path(__FILE__)), "plugins/*.rb")).each {|r| load r}
 if __FILE__ == $0
     if (ARGV[0] == "help") or (ARGV.empty?)
         Stuffy::Objects.load_db

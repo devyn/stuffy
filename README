@@ -1,0 +1,33 @@
+           # Stuffy #
+[[ a thing to manage every thing ]]
+
+Stuffy is an object manager. It can literally manage anything and everything through the use of plugins.
+
+::: Creating a Plugin
+It's easy! Just make a subclass of Stuffy::Plugin. This is a special class that contains one method: inherited. When Stuffy::Plugin gets inherited, it enters the subclass and defines all the methods.
+
+class Stuffy::SampleFile < Stuffy::Plugin
+end
+
+Then, you need to add the plugin name, and the primary key with properties.
+
+class Stuffy::SampleFile
+    plugin_name 'sample file'
+    property :location # etc.
+    def primary_key; location; end # or equivalent
+end
+
+If your plugin is not something more abstract, and is just a pointer to a file with some metadata, you can add the default commands.
+
+class Stuffy::SampleFile
+    default_commands
+end
+
+Thats all a basic plugin needs. However, you will most likely want to add some of your own commands.
+
+class Stuffy::SampleFile
+    command 'read', 'reads a Sample file', '{sample-file-id}' do |id|
+        sf = Stuffy::Objects.find id.to_i
+        File.open(sf.location) {|f| putc f.getc until f.eof? }
+    end
+end

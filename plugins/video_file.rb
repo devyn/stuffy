@@ -8,6 +8,6 @@ class Stuffy::VideoFile < Stuffy::Plugin
     def primary_key; location; end
     command 'watch', 'plays a Video file using config:video-player', '{video-file-id}' do |id|
         vf = Stuffy::Objects.find 'video file', id.to_i
-        system Stuffy::Objects.config('video-player'), sf.location
+        system Stuffy::Objects.config('video-player'), vf.location
     end
 end

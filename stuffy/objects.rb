@@ -20,10 +20,17 @@ module Stuffy
             @db['objects'][type]  << ob
         end
         def remove(type, id)
-            @db['objects'][type].reject!{|o|o.id == id}
+            find(type, id).delete
         end
         def find(type, id)
-            @db['objects'][type].select{|o|o.id == id}.first
+            @db['objects'][type].find{|o|o.id == id}
+        end
+        def search(pkey)
+            ob_match = []
+            @db['objects'].each do |ot,vs|
+                ob_match += vs.select{|o|o.primary_key.to_s =~ /#{Regexp.escape(pkey)}/i}
+            end
+            return ob_match
         end
         def all(type)
             @db['objects'][type]

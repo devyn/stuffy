@@ -4,6 +4,7 @@ module Stuffy
         def self.inherited(subclass)
             Stuffy::Plugin::ALL << subclass
             class << subclass
+                attr_reader :name
                 def new(*args)
                     p = allocate
                     p.instance_variable_set("@table", {})
@@ -11,6 +12,7 @@ module Stuffy
                     Stuffy::Objects.add plugin_name, p
                     p
                 end
+                def get_plugin_name; @name.dup; end
                 private
                 def plugin_name _name=nil
                     if _name

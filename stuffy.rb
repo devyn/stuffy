@@ -9,7 +9,8 @@ require 'stuffy/objects'
 require 'stuffy/output'
 Dir.glob(File.join(File.dirname(File.expand_path(__FILE__)), "plugins/*.rb")).each {|r| load r}
 if __FILE__ == $0
-    if (ARGV[0] == "help") or (ARGV.empty?)
+    case
+    when ARGV[0] == 'help', ARGV.empty?
         Stuffy::Objects.load_db
         Stuffy::Output.action "\\{command}stuffy\\{normal} version \\{version}#{Stuffy::VERSION}\\{normal} help"
         Stuffy::Output.message "\t[[ a \\{type}thing\\{normal} to manage every \\{type}thing\\{normal} ]]"
@@ -18,6 +19,11 @@ if __FILE__ == $0
             cs.each do |c|
                 Stuffy::Output.help "\t\\{command}#{c[0]}\\{normal}#{" \\{command-parameters}#{c[2]}\\{normal}" unless c[2].empty?} \\{command-desc}# #{c[1]}\\{normal}"
             end
+        end
+    when ARGV[0] == 'search'
+        Stuffy::Objects.load_db
+        Stuffy::Objects.search(ARGV[1..-1].join(' ')).each do |ob|
+            Stuffy::Output.message "\\{type}#{ob.class.get_plugin_name}\\{normal} \\{id}(#{ob.id})\\{normal} #{ob.primary_key}"
         end
     else
         Stuffy::Objects.load_db
